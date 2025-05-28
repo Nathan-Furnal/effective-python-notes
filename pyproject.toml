@@ -1,0 +1,59 @@
+[project]
+name = "effective-python"
+version = "0.1.0"
+description = "Notes and experiments based on the third edition of the 'Effective Python' book."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+lint = [
+    "basedpyright>=1.29.2",
+    "ruff>=0.11.11",
+]
+test = [
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+]
+dev = [
+    "pre-commit>=4.2.0",
+    {include-group = "lint"},
+    {include-group = "test"},
+]
+
+[tool.ruff.lint]
+
+select = ["ALL"]
+ignore = [
+  "D203",    # No blank line before class docstring
+  "D213",    # No blank line for docstring first line
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+  "INP001",  # Tests are not an implicit pkg
+  "D100",    # Don't bother with docstrings in test modules
+]
+
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "uv"
+update_changelog_on_bump = true
+major_version_zero = true
+
+[tool.coverage]
+run.branch = true
+run.relative_files = true
+run.source_pkgs = [ "effective" ]
+report.exclude_also = [
+  "@overload",
+  "def __dir__()",
+  "def __repr__",
+  "if TYPE_CHECKING:",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
