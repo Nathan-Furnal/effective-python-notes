@@ -22,5 +22,3 @@ repos:
   rev: v4.8.2
   hooks:
   - id: commitizen
-  - id: commitizen-branch
-    stages: [pre-push]
