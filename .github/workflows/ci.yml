@@ -37,7 +37,7 @@ jobs:
           version: ${{ env.UV_VERSION }}
 
       - name: "Install lint dependencies"
-        run: uv sync --group --locked lint
+        run: uv sync --locked --group lint
 
       - name: "format"
         run: uv run ruff format --diff .
@@ -67,7 +67,7 @@ jobs:
           version: ${{ env.UV_VERSION }}
 
       - name: "Install test dependencies"
-        run: uv sync --group --locked test
+        run: uv sync --locked --group test
 
       - name: "testing project"
         run: uv run pytest
