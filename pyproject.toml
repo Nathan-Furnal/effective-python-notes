@@ -33,6 +33,8 @@ ignore = [
 "tests/**" = [
   "INP001",  # Tests are not an implicit pkg
   "D100",    # Don't bother with docstrings in test modules
+  "D103",    # Don't force docstrings in test funcs
+  "ANN201",  # Don't annotate type for tests
 ]
 
 
