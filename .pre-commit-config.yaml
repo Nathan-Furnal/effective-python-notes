@@ -22,3 +22,8 @@ repos:
   rev: v4.8.2
   hooks:
   - id: commitizen
+
+- repo: https://github.com/jackdewinter/pymarkdown
+  rev: v0.9.30
+  hooks:
+  - id: pymarkdown
