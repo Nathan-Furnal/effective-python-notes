@@ -27,4 +27,5 @@ repos:
   rev: v0.9.30
   hooks:
   - id: pymarkdown
-    args: ['--config=pyproject.toml']
+    pass_filenames: false
+    args: [--config, pyproject.toml, scan, .]
