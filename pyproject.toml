@@ -61,4 +61,4 @@ report.exclude_also = [
 testpaths = ["tests"]
 
 [tool.pymarkdown]
-plugins.md013.ignore_headings = true
+plugins.MD013.headings = false
