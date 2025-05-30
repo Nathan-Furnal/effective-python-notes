@@ -16,11 +16,14 @@ test = [
     "pytest-cov>=6.1.1",
 ]
 dev = [
-    "gnureadline>=8.2.13",  # uv run python -m override_readline, makes REPL work properly in Emacs
     "pre-commit>=4.2.0",
     {include-group = "lint"},
     {include-group = "test"},
 ]
+
+emacs = [
+    "gnureadline>=8.2.13",  # uv run python -m override_readline, makes REPL work properly in Emacs
+  ]
 
 [tool.ruff.lint]
 
