@@ -14,7 +14,7 @@ def extract_move_from_directions(directions: str) -> Move | list[Move]:
     match res := pat.findall(directions):
         case [(direction, steps)]:
             return Move(direction, int(steps))
-        case [*matches] if len(matches) > 0:
+        case [*matches] if len(matches) > 1:
             return [Move(direction, int(steps)) for direction, steps in matches]
         case _:
             msg = f"Incorrect match: {res}"
