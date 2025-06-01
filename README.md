@@ -20,3 +20,20 @@ on the standard library.
 ## Notes
 
 See the [notes file](./NOTES.md) for comments, following the structure of the book.
+
+## Running the tests
+
+Since the project uses a src layout, you'll need to install the project and then
+run the tests.
+
+In the project folder,
+
+```sh
+uv pip install -e .  # Running this the first time and every time code changes
+```
+
+Then,
+
+```sh
+uv run pytest
+```
