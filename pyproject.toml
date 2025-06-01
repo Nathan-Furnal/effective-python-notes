@@ -4,51 +4,50 @@ version = "0.1.0"
 description = "Notes and experiments based on the third edition of the 'Effective Python' book."
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+classifiers = [ "Programming Language :: Python :: 3 :: Only", "Programming Language :: Python :: 3.13" ]
+dependencies = [  ]
 
 [dependency-groups]
-lint = [
-    "basedpyright>=1.29.2",
-    "ruff>=0.11.11",
-]
-test = [
-    "pytest>=8.3.5",
-    "pytest-cov>=6.1.1",
-]
 dev = [
-    "pre-commit>=4.2.0",
-    {include-group = "lint"},
-    {include-group = "test"},
+  "pre-commit>=4.2",
+  { include-group = "lint" },
+  { include-group = "test" },
 ]
 
+test = [
+  "pytest>=8.3.5",
+  "pytest-cov>=6.1.1",
+]
+lint = [
+  "basedpyright>=1.29.2",
+  "ruff>=0.11.11",
+]
 emacs = [
-    "gnureadline>=8.2.13",  # uv run python -m override_readline, makes REPL work properly in Emacs
-  ]
-
-[tool.ruff.lint]
-
-select = ["ALL"]
-ignore = [
-  "D203",    # No blank line before class docstring
-  "D213",    # No blank line for docstring first line
+  "gnureadline>=8.2.13", # uv run python -m override_readline, makes REPL work properly in Emacs
 ]
 
-[tool.ruff.lint.per-file-ignores]
-"tests/**" = [
-  "INP001",  # Tests are not an implicit pkg
-  "D100",    # Don't bother with docstrings in test modules
-  "D103",    # Don't force docstrings in test funcs
-  "ANN201",  # Don't annotate type for tests
+[tool.ruff]
+line-length = 99
+
+lint.select = [ "ALL" ]
+lint.ignore = [
+  "COM812", # Missing trailing comma
+  "D100",   # Missing docstring in public module
+  "D101",   # Missing docstring in public class
+  "D103",   # Missing docstring in public function
+  "D203",   # No blank line before class docstring
+  "D213",   # No blank line for docstring first line
+]
+lint.per-file-ignores."tests/**" = [
+  "ANN201", # Don't annotate type for tests
+  "D100",   # Don't bother with docstrings in test modules
+  "D103",   # Don't force docstrings in test funcs
+  "INP001", # Tests are not an implicit pkg
+  "S101",   # Assertions are valid in tests
 ]
 
-
-[tool.commitizen]
-name = "cz_conventional_commits"
-tag_format = "$version"
-version_scheme = "pep440"
-version_provider = "uv"
-update_changelog_on_bump = true
-major_version_zero = true
+[tool.pytest.ini_options]
+testpaths = [ "tests" ]
 
 [tool.coverage]
 run.branch = true
@@ -61,8 +60,13 @@ report.exclude_also = [
   "if TYPE_CHECKING:",
 ]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "uv"
+update_changelog_on_bump = true
+major_version_zero = true
 
 [tool.pymarkdown]
 plugins.MD013.headings = false
