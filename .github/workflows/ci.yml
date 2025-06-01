@@ -69,5 +69,8 @@ jobs:
       - name: "Install test dependencies"
         run: uv sync --locked --group test
 
+      - name: "Install the project"
+        run: uv pip install -e .
+
       - name: "testing project"
         run: uv run pytest
