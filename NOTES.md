@@ -148,7 +148,141 @@ matching at all for the regex.
 
 ## Chapter 2. Strings and Slicing
 
+### Item 10: Know the Differences Between bytes and str
+
+All things considered, it's relatively rare to have meaningful operations between strings and bytes. So I was not
+incredibly convinced it deserved an item. That being said, there are clearly some areas where it comes up a lot.
+
+In most cryptography related libs, you'll work with bytes exclusively, while most of your inputs are strings.
+Hashing, (as)symmetric keys encryption, etc. Will often return bytes, since it is the base type for most of those operations.
+
+See the [documentation on hashing](https://docs.python.org/3/library/hashlib.html)
+or the [documentation on cryptography](https://cryptography.io/en/latest/).
+
+Another fun exercise that touches on the difference between memory and representation
+for strings is [Advent of Code, year 2015, day 8](https://adventofcode.com/2015/day/8).
+
+### Item 11: Prefer Interpolated F-Strings over C-Style Format Strings and str.format
+
+Now there's even a [PEP for template strings](https://peps.python.org/pep-0750/) which will
+land in Python 3.14!
+
+100% agree, there's very little reason to use anything other than `f-string`s nowadays.
+
+Something I haven't seen mentioned though, is that you can bind "later" when using `str.format`.
+For example,
+
+```python
+s = "Hey there {0}"
+print(s.format("Jack"))  # Hey there Jack
+```
+
+While `f-string`s are eager and you need to bind a name before using it.
+
+```python
+i: int
+print(f"{i}")  # NameError
+i = 0
+```
+
+The "fix" of course is to pass the data around until the last moment, when you need to actually produce the string.
+
+### Item 12: Understand the Difference Between repr and str when Printing Objects
+
+Cool distinction of what is sometimes unclear:
+
+- `__repr__` :: Serializable (somewhat) representation. Can be called up in `f-string`s with `f{obj!r}`.
+- `__str__` :: Human readable representation.
+
+`dataclasses` will take care of most representation for you but if you can't or won't use them, here's a trick for the lazy.
+
+```python
+class Point:
+    def __init__(self, x: int, y: int) -> None:
+        self.x = x
+        self.y = y
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__qualname__}({", ".join(f"{k}={v}" for k,v in self.__dict__.items())})'
+
+class ColoredPoint(Point):
+        def __init__(self, x: int, y: int, color: str) -> None:
+            super().__init__(x, y)
+            self.color = color
+```
+
+Then,
+
+```python
+p = Point(1, 2)                  # shows: Point(x=1, y=2)
+c = ColoredPoint(3, 4, "green")  # shows: ColoredPoint(x=3, y=4, color=green)
+```
+
+### Item 13: Prefer Explicit String Concatenation over Implicit, Especially in Lists
+
+🐍
+
+### Item 14: Know How to Slice Sequences
+
+Nothing special here, just a good reminder that slicing creates copies. Which might
+be a suprise if you're used to other languages or libraries like [numpy](https://numpy.org/).
+
+```python
+l = [1, 2, 3, 4]
+ll = l[:2]
+ll[0] = 11
+
+# `l` is still [1, 2, 3, 4]
+# `ll` is [11, 2]
+```
+
+But,
+
+```python
+import numpy as np
+l = np.array([1, 2, 3, 4])
+ll = l[:2]
+ll[0] = 11
+
+# `l` is array([11,  2,  3,  4])
+# `ll` is array([11,  2])
+```
+
+### Item 15: Avoid Striding and Slicing in a Single Expression
+
+🐍 (`itertools` mentioned!)
+
+### Item 16: Prefer Catch-All Unpacking over Slicing
+
+Fully agreed and as shown, useful when you want to get only parts of a sequence,
+I often use something like:
+
+```python
+first, *rest = seq
+```
+
+You can do this as many times as needed,
+
+```python
+l = [1, 2, 3, 4, 5, 6]
+
+first, second, *_, second_last, last = l  # 1, 2, <skip>, 5, 6
+```
+
+The star notation collects items in a new list, so just make sure you're not using
+this pattern in compute intensive loops, because it will be costly.
+
 ## Chapter 3. Loops and Iterators
+
+### Item 17: Prefer enumerate over range
+
+🐍
+
+### Item 18: Use zip to Process Iterators in Parallel
+
+### Item 19: Avoid else Blocks After for and while Loops
+
+### Item 20: Never Use for Loop Variables After the Loop Ends
 
 ## Chapter 4. Dictionaries
 

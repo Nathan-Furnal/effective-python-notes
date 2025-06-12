@@ -70,6 +70,7 @@ major_version_zero = true
 
 [tool.pymarkdown]
 plugins.MD013.headings = false
+plugins.MD013.line_length = 120
 
 [tool.basedpyright]
 reportAny = "none"
