@@ -280,9 +280,76 @@ this pattern in compute intensive loops, because it will be costly.
 
 ### Item 18: Use zip to Process Iterators in Parallel
 
+`ruff` correctly warns about not using `strict=True`, good mentioning it since it's what you want
+most of the time. I also want to mention there's [`zip_longest`](https://docs.python.org/3/library/itertools.html#itertools.zip_longest)
+in the standard library, which lets you pad the shorter iterables with other values until the longest one
+is exhausted.
+
+There are some interesting patterns you can use with `zip` but they are
+mostly irrelevant in Python in my opinion: any time you want to iterate
+over multiple parallel iterables, you'll want to iterate over a list
+of objects anyways.
+
+That is:
+
+```python
+names = ["James", "Mary", "Abdel"]
+ages = [23, 40, 38]
+heights = [189, 174, 169]
+
+for name, age, height in zip(names, ages, heights, strict=True):
+    print(name, age, heights)
+```
+
+The values are related an represent a single entity: a person. So you
+would do this instead:
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class Person:
+    name: str
+    age: int
+    height: int
+
+james = Person(name="James", age=23, height=189)
+mary = Person(name="Mary", age=40, height=174)
+abdel = Person(name="Abdel", age=38, height=169)
+
+for person in [james, mary, abdel]:
+    print(person)
+```
+
+It's actually quite rare to iterate over many *unrelated* values
+in parallel in my experience it's often more readable to not do so
+in fact, caveats apply of course.
+
+In other languages where perfomance and memory layouts
+matter, the two patterns shown above are often called:
+
+> Struct of Arrays vs. Array of Structs
+
+There's also [a wikipedia article](https://en.wikipedia.org/wiki/AoS_and_SoA)
+on the subject.
+
 ### Item 19: Avoid else Blocks After for and while Loops
 
+This feature is arcane and for the maybe one time it might be useful,
+it's just worth refactoring because few people will understand what it means.
+
 ### Item 20: Never Use for Loop Variables After the Loop Ends
+
+Honestly one of the cases where Python scoping rules are just bad,
+the variables shouldn't be available once they go out of scope.
+
+### Item 21: Be Defensive when Iterating over Arguments
+
+### Item 22: Never Modify Containers While Iterating over Them; Use Copies or Caches Instead
+
+### Item 23: Pass Iterators to any and all for Efficient Short-Circuiting Logic
+
+### Item 24: Consider itertools for Working with Iterators and Generators
 
 ## Chapter 4. Dictionaries
 
